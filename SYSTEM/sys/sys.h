@@ -79,6 +79,9 @@
 #include "show.h"								   
 #include "DataScope_DP.h"
 #include "exti.h"
+#include "timer2.h"
+#include "modbus_uart.h"
+#include "modbus.h"
 //JTAG模式设置定义
 #define JTAG_SWD_DISABLE   0X02
 #define SWD_ENABLE         0X01

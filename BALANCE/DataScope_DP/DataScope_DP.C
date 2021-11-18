@@ -35,8 +35,8 @@ void DataScope_Get_Channel_Data(float Data,unsigned char Channel)
   {
      switch (Channel)
 		{
-      case 1:  Float2Byte(&Data,DataScope_OutPut_Buffer,1); break;
-      case 2:  Float2Byte(&Data,DataScope_OutPut_Buffer,5); break;
+		  case 1:  Float2Byte(&Data,DataScope_OutPut_Buffer,1); break;
+		  case 2:  Float2Byte(&Data,DataScope_OutPut_Buffer,5); break;
 		  case 3:  Float2Byte(&Data,DataScope_OutPut_Buffer,9); break;
 		  case 4:  Float2Byte(&Data,DataScope_OutPut_Buffer,13); break;
 		  case 5:  Float2Byte(&Data,DataScope_OutPut_Buffer,17); break;
