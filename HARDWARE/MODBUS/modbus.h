@@ -4,8 +4,7 @@
 // #include "stm32f10x_conf.h"
 #include "stm32f10x_gpio.h"
 
-#define RS485_RT_1 GPIO_SetBits(GPIOA, GPIO_Pin_5)     //485发送状态
-#define RS485_RT_0 GPIO_ResetBits(GPIOA, GPIO_Pin_5)   //485置接收状态
+
 typedef struct
 {
  u8 myadd;//本设备的地址

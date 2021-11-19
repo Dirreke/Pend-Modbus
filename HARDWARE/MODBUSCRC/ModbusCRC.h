@@ -3,8 +3,8 @@
 //==========================================
 //#include "_TYPE.h"
 //==========================================
-#include "stm32f10x_conf.h"
-
+// #include "stm32f10x_conf.h"
+#include "sys.h"
  #define uint u16
  #define uchar u8
 //------------------------------------------

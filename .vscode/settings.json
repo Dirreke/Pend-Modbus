@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "modbus_uart.h": "c",
-        "modbus.h": "c"
+        "modbus.h": "c",
+        "DataScope_DP.C": "cpp",
+        "timer.h": "c"
     }
 }

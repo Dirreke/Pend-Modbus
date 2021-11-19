@@ -17,7 +17,7 @@ void Mosbus_Init()
 {
 	modbus.myadd=4;  //本从设备的地址
 	modbus.timrun=0; //MODbus定时器停止计时
-  	RS485_Init();
+  	my_usart_Init();
 }
 
 
@@ -49,14 +49,10 @@ void Modbud_fun3()  //3号功能码处理  ---主机要读取本从机的寄存器
 	modbus.Sendbuf[i++]=crc/256;  //
 	modbus.Sendbuf[i++]=crc%256;
 	
-	RS485_RT_1;  //
-	
 	for(j=0;j<i;j++)
 	{
-	 RS485_byte(modbus.Sendbuf[j]);
+	 my_usart_byte(modbus.Sendbuf[j]);
 	}
-	
-	RS485_RT_0;  //
 }
 
 void Modbud_fun6()  //6号功能码处理
@@ -81,14 +77,10 @@ void Modbud_fun6()  //6号功能码处理
 	 modbus.Sendbuf[i++]=crc/256;  //
 	 modbus.Sendbuf[i++]=crc%256;
 	
-	RS485_RT_1;  //
-	
 	for(j=0;j<i;j++)
 	{
-	 RS485_byte(modbus.Sendbuf[j]);
+	 my_usart_byte(modbus.Sendbuf[j]);
 	}
-	
-	RS485_RT_0;  //
 }
 
 void Mosbus_Event()

@@ -4,8 +4,10 @@
 
 // #include "stm32f10x_conf.h"
 #include "stm32f10x_gpio.h"
-void RS485_Init(void);
-void RS485_byte(u8 d);  //485发送一个字节
-
+#include "stm32f10x_usart.h"
+#include "stm32f10x_rcc.h"
+#include "sys.h"
+void my_usart_Init(void);
+void my_usart_byte(u8 d); 
 #endif
 

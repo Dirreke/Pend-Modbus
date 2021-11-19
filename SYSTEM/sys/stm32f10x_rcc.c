@@ -21,6 +21,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_rcc.h"
+#include "my_config.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Driver
   * @{

@@ -79,7 +79,6 @@
 #include "show.h"								   
 #include "DataScope_DP.h"
 #include "exti.h"
-#include "timer2.h"
 #include "modbus_uart.h"
 #include "modbus.h"
 //JTAG模式设置定义
@@ -108,6 +107,7 @@ void WFI_SET(void);		//执行WFI指令
 void INTX_DISABLE(void);//关闭所有中断
 void INTX_ENABLE(void);	//开启所有中断
 void MSR_MSP(u32 addr);	//设置堆栈地址
+	
 #endif
 
 

@@ -11,18 +11,18 @@ float Angle_Balance;															  //角位移传感器数据
 float Balance_KP = 400, Balance_KD = 400, Position_KP = 20, Position_KD = 300;	  //PID系数
 float Menu = 1, Amplitude1 = 5, Amplitude2 = 20, Amplitude3 = 1, Amplitude4 = 10; //PID调试相关参数
 
-// u16 Reg[]={0x0000,   //本设备寄存器中的值
-//            0x0001,
-//            0x0002,
-//            0x0003,
-//            0x0004,
-//            0x0005,
-//            0x0006,
-//            0x0007,
-//            0x0008,
-//            0x0009,
-//            0x000A,	
-//           };	
+u16 Reg[]={0x0000,   //本设备寄存器中的值
+           0x0001,
+           0x0002,
+           0x0003,
+           0x0004,
+           0x0005,
+           0x0006,
+           0x0007,
+           0x0008,
+           0x0009,
+           0x000A,	
+          };	
 
 
 // void delay(u32 x)
@@ -30,26 +30,6 @@ float Menu = 1, Amplitude1 = 5, Amplitude2 = 20, Amplitude3 = 1, Amplitude4 = 10
 
 //  while(x--);
 // }
-// void Isr_Init()
-// {
-// 	NVIC_InitTypeDef  isr;
-//   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1); //  a bbb 
-	
-// 	isr.NVIC_IRQChannel=TIM2_IRQn;
-// 	isr.NVIC_IRQChannelCmd=ENABLE;
-// 	isr.NVIC_IRQChannelPreemptionPriority=1;
-// 	isr.NVIC_IRQChannelSubPriority=2;	
-// 	NVIC_Init(&isr);   //	
-	
-// 	isr.NVIC_IRQChannel=USART2_IRQn;
-// 	isr.NVIC_IRQChannelCmd=ENABLE;
-// 	isr.NVIC_IRQChannelPreemptionPriority=1;
-// 	isr.NVIC_IRQChannelSubPriority=0;	
-// 	NVIC_Init(&isr);   //
-	
-		
-// }
-
 
 
 // void TIM2_IRQHandler()//定时器2的中断服务子函数  1ms一次中断
