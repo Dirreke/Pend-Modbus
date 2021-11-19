@@ -34,7 +34,7 @@ int TIM1_UP_IRQHandler(void)
 		if (modbus.timrun != 0)
 		{
 			modbus.timout++;
-			if (modbus.timout >= 2) //间隔时间达到了时间
+			if (modbus.timout >= 3) //间隔时间达到了时间
 			{
 				modbus.timrun = 0; //关闭定时器--停止定时
 				modbus.reflag = 1; //收到一帧数据
