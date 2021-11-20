@@ -50,7 +50,7 @@ u16 Reg[]={0x0000,   //本设备寄存器中的值
 // 		}  		
 // 	}	
 // }
-
+	u8 st2;
 int main(void)
 {
 	Stm32_Clock_Init(9);		   //=====系统时钟设置
@@ -71,6 +71,7 @@ int main(void)
 	Mosbus_Init();
 	while (1)
 	{
+		st2 = USART_GetFlagStatus(USART1,USART_FLAG_ORE);
 		Mosbus_Event(); //处理MODbus数据
 		//DataScope();	//===上位机
 		delay_flag = 1; //===50ms中断精准延时标志位

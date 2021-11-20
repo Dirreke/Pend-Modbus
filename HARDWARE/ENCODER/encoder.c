@@ -17,7 +17,7 @@ void Encoder_Init_TIM2(void)
 	/* 把定时器初始化为编码器模式 */ 
 	TIM2->DIER|=1<<0;   //允许更新中断				
 	TIM2->DIER|=1<<6;   //允许触发中断
-	MY_NVIC_Init(1,3,TIM2_IRQn,1);
+	MY_NVIC_Init(1,3,TIM2_IRQn,2);
 
 	/* Timer configuration in Encoder mode */ 
 	TIM2->PSC = 0x0;//预分频器
@@ -60,7 +60,7 @@ void Encoder_Init_TIM4(void)
 	//这两个东东要同时设置才可以使用中断
 	TIM4->DIER|=1<<0;   //允许更新中断				
 	TIM4->DIER|=1<<6;   //允许触发中断
-	MY_NVIC_Init(1,3,TIM4_IRQn,1);
+	MY_NVIC_Init(1,3,TIM4_IRQn,2);
 
 	/* Timer configuration in Encoder mode */ 
 	TIM4->PSC = 0x0;//预分频器

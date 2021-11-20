@@ -20,7 +20,7 @@ void my_usart_Init(void)
   GPIO_Init(GPIOA, &GPIO_InitStructure);                //初始化GPIOA
 
   /* USART1 工作模式配置 */
-  USART_InitStructure.USART_BaudRate = 9600;                                      //9600
+  USART_InitStructure.USART_BaudRate = 115200;                                      //9600
   USART_InitStructure.USART_WordLength = USART_WordLength_8b;                     //数据位数设置：8位
   USART_InitStructure.USART_StopBits = USART_StopBits_1;                          //停止位设置：1位
   USART_InitStructure.USART_Parity = USART_Parity_No;                             //是否奇偶校验：无
@@ -34,7 +34,7 @@ void my_usart_Init(void)
   USART_Cmd(USART1, ENABLE);
   USART_ClearFlag(USART1, USART_FLAG_TC);
 
-  MY_NVIC_Init(0, 0, USART1_IRQn, 0);
+  MY_NVIC_Init(0, 0, USART1_IRQn, 2);
 }
 
 void my_usart_byte(u8 d) //发送一个字节
@@ -54,6 +54,8 @@ void USART1_IRQHandler() //MODBUS字节接收中断
     sbuf = USART1->DR;
     if (modbus.reflag == 1) //有数据包正在处理
     {
+			if(USART_GetITStatus(USART1,USART_IT_RXNE)!=RESET)
+				USART_ClearITPendingBit(USART1,USART_IT_RXNE);
       return;
     }
     modbus.rcbuf[modbus.recount++] = sbuf;
@@ -62,5 +64,6 @@ void USART1_IRQHandler() //MODBUS字节接收中断
     {
       modbus.timrun = 1; //启动定时
     }
+		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
   }
 }
