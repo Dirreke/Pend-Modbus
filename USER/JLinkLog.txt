@@ -1657,3 +1657,8 @@ T5FB8 186:415 JLINK_ReadMem (0x08000230, 0x003C Bytes, ...) -- CPU is running --
 T5FB8 186:417 JLINK_ReadMem (0x08000230, 0x003C Bytes, ...) -- CPU is running -- CPU_ReadMem(60 bytes @ 0x08000230) -- Data:  AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA ...  returns 0x01 (0002ms, 1110ms total)
 T5FB8 186:419 JLINK_ReadMem (0x08000230, 0x003C Bytes, ...) -- CPU is running -- CPU_ReadMem(60 bytes @ 0x08000230) -- Data:  AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA ...  returns 0x01 (0002ms, 1112ms total)
 T5FB8 186:421 JLINK_ReadMem (0x08000230, 0x003C Bytes, ...) -- CPU is running -- CPU_ReadMem(60 bytes @ 0x08000230) -- Data:  AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA AA ...  returns 0x01 (0003ms, 1115ms total)
+T4794 186:421 
+  ***** Error: Connection to emulator lost! (2221665ms, 2222780ms total)
+T5FB8 2445:754 JLINK_Close() (0000ms, 1115ms total)
+T5FB8 2445:754  (0000ms, 1115ms total)
+T5FB8 2445:754 Closed (0000ms, 1115ms total)
