@@ -1,0 +1,34 @@
+﻿AOE ID,是否启用,名称,触发条件,触发条件参数,变量初始值,
+300,TRUE,倒立摆控制,Event_Drive,,"PWMFilter=0; AngleZHONGZHI=0;  Angle_Bias=0; PWM_Bias=0;  PWM_SumBias=0; PWM_dBias=0; LastPWM_Bias=0; PWM_dBiasFilte=0; Omega=0; LastAngle=0; OmegaFilter=0; Out_Ang=0; Out_Speed=0; ctrlout:0;  
+待定:KpAng=0; KdAng=0; KpSpd=0; KdSpd=0; KiSpd=0; uplim=6900;downlim=-6900;
+测点:PWMout;Angle;PWM_Set;DoCal_Point;",
+,,,,,,
+AOE ID,变量定义,,,,,
+,,,,,,
+,,,,,,
+AOE ID,节点ID,名称,节点类型,超时时间(ms),表达式,
+300,1,simulink通信事件,Condition,10,DoCal_POINT > 0.5,
+300,2,执行顺序计算中间节点1,Condition,10,1,
+300,3,执行顺序计算中间节点2,Condition,10,1,
+300,4,执行顺序计算中间节点3,Condition,10,1,
+300,5,执行顺序计算中间节点4,Condition,10,1,
+300,6,执行顺序计算中间节点5,Condition,10,1,
+300,7,执行顺序计算中间节点6,Condition,10,1,
+300,8,执行顺序计算中间节点6,Condition,10,1,
+300,9,结束节点,Condition,100,DoCal_POINT == 0,
+,,,,,,
+AOE ID,首尾节点,动作名称,失败模式,动作类型,动作参数,
+300,1;2,开始PID计算，PWM速度滤波，防止正反馈,Default,Set_Points,DoCal_POINT: 0;,PWMFilter=0.1*PWMout+0.9*PWMFilter;
+300,2;3,比例：求角度误差，PWM速度误差,Default,Set_Points,,"Angle_Bias=Angle-AngleZHONGZHI;
+PWM_Bias=PWM_Set-PWMFilter;"
+300,3;4,速度的积分(位置的比例),Default,Set_Points,,PWM_SumBias=PWM_SumBias+PWM_Bias;
+300,4;5,角度的微分(Omega)、速度的微分,Default,Set_Points,,"Omega=Angle-LastAngle;
+PWM_dBias=PWM_Bias-LastPWM_Bias;"
+300,5;6,微分的滤波,Default,Set_Points,,"OmegaFilter=Omega*0.7+OmegaFilter*0.3;
+PWM_dBiasFilter=PWM_dBias*0.7+PWM_dBiasFilter*0.3;"
+300,6;7,求角度环和速度环的输出,Default,Set_Points,,"Out_Ang=KpAng*Angle_Bias+KdAng*OmegaFilter;
+Out_Speed=KpSpd*PWM_Bias+KiSpd*PWM_SumBias+KdSpd*PWM_dBiasFilter;"
+300,7;8,储存last,Default,Set_Points,,"ctrlout=PWMout+Out_Ang-Out_Speed;
+LastAngle=Angle;
+LastPWM_Bias=PWM_Bias;"
+300,"8,9",限幅输出,Default,Set_Points,,PWMout=(ctrlout <= uplim && ctrlout >= downlim) * ctrlout + (ctrlout > uplim) * uplim + (ctrlout < downlim) * downlim;
