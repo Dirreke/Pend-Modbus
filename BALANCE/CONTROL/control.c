@@ -5,13 +5,17 @@
 **************************************************************************/
 int Balance_Pwm, Position_Pwm;
 u8 Flag_Target, Position_Target;
+extern u16 Reg[];
+union EightByteFloat {int16_t twobyte[4]; double data;}eightfloat;//union是低位低地址
+
+
 /**************************************************************************
 函数功能：所有的控制代码都在这里面
           TIM1控制的5ms定时中断 
 **************************************************************************/
 int TIM1_UP_IRQHandler(void)
 {
-	if (TIM1->SR & 0X0001) //5ms定时中断
+	if (TIM1->SR & 0X0001) //1ms定时中断
 	{
 		TIM1->SR &= ~(1 << 0); //===清除定时器1中断标志位
 		if (delay_flag == 1)
@@ -19,13 +23,42 @@ int TIM1_UP_IRQHandler(void)
 			if (++delay_50 == 10)
 				delay_50 = 0, delay_flag = 0; //===给主函数提供50ms的精准延时
 		}
+		
+		Reg[17]=1;
+		
+		eightfloat.data=1.2;//暂时测试用
+		Reg[4]=eightfloat.twobyte[0]; 
+		Reg[3]=eightfloat.twobyte[1]; 
+		Reg[2]=eightfloat.twobyte[2]; 
+		Reg[1]=eightfloat.twobyte[3]; 
+		
 		Encoder = Read_Encoder(4);				//===更新编码器位置信息
+		eightfloat.data=(double) (Encoder - Position_Zero);
+		Reg[8]=eightfloat.twobyte[0]; 
+		Reg[7]=eightfloat.twobyte[1]; 
+		Reg[6]=eightfloat.twobyte[2]; 
+		Reg[5]=eightfloat.twobyte[3]; 
+		
 		Angle_Balance = Get_Adc_Average(3, 15); //===更新姿态
-		Balance_Pwm = balance(Angle_Balance);	//===角度PD控制
-		if (++Position_Target > 4)
-			Position_Pwm = Position(Encoder), Position_Target = 0; //===位置PD控制 25ms进行一次位置控制
-		Moto = Balance_Pwm - Position_Pwm;						   //===计算电机最终PWM
+		eightfloat.data = (double) (Angle_Balance - ZHONGZHI);
+		Reg[12]=eightfloat.twobyte[0]; 
+		Reg[11]=eightfloat.twobyte[1]; 
+		Reg[10]=eightfloat.twobyte[2]; 
+		Reg[9] =eightfloat.twobyte[3]; 
+		
+		//从控制器读取PWMout
+		eightfloat.twobyte[0]=Reg[16]; 
+		eightfloat.twobyte[1]=Reg[15];
+		eightfloat.twobyte[2]=Reg[14]; 
+		eightfloat.twobyte[3]=Reg[13];
+		
+//		Balance_Pwm = balance(Angle_Balance);	//===角度PD控制
+//		if (++Position_Target > 4)
+//			Position_Pwm = Position(Encoder), Position_Target = 0; //===位置PD控制 25ms进行一次位置控制
+
+		Moto = (int)(eightfloat.data); //Balance_Pwm - Position_Pwm;						   //===计算电机最终PWM
 		Xianfu_Pwm();											   //===PWM限幅 反正占空比100%带来的系统不稳定因素
+		
 		if (Turn_Off(Voltage) == 0)								   //===低压和倾角过大保护
 			Set_Pwm(Moto);										   //===赋值给PWM寄存器
 		Led_Flash(100);											   //===LED闪烁指示系统正常运行
@@ -34,7 +67,7 @@ int TIM1_UP_IRQHandler(void)
 		if (modbus.timrun != 0)
 		{
 			modbus.timout++;
-			if (modbus.timout >= 3) //间隔时间达到了时间
+			if (modbus.timout >= 10) //间隔时间达到了时间
 			{
 				modbus.timrun = 0; //关闭定时器--停止定时
 				modbus.reflag = 1; //收到一帧数据

@@ -11,18 +11,19 @@ float Angle_Balance;															  //角位移传感器数据
 float Balance_KP = 400, Balance_KD = 400, Position_KP = 20, Position_KD = 300;	  //PID系数
 float Menu = 1, Amplitude1 = 5, Amplitude2 = 20, Amplitude3 = 1, Amplitude4 = 10; //PID调试相关参数
 
-u16 Reg[]={0x0000,   //本设备寄存器中的值
-           0x0001,
-           0x0002,
-           0x0003,
-           0x0004,
-           0x0005,
-           0x0006,
-           0x0007,
-           0x0008,
-           0x0009,
-           0x000A,	
-          };	
+u16 Reg[20];
+//{0x0000,   //本设备寄存器中的值
+//           0x0001,
+//           0x0002,
+//           0x0003,
+//           0x0004,
+//           0x0005,
+//           0x0006,
+//           0x0007,
+//           0x0008,
+//           0x0009,
+//           0x000A,	
+//          };	
 
 
 // void delay(u32 x)
@@ -66,7 +67,7 @@ int main(void)
 	Encoder_Init_TIM4();		   //=====初始化编码器（TIM2的编码器接口模式）
 	Angle_Adc_Init();			   //=====角位移传感器模拟量采集初始化
 	Baterry_Adc_Init();			   //=====电池电压模拟量采集初始化
-	Timer1_Init(49, 7199);		   //=====定时中断初始化
+	Timer1_Init(9, 7199);		   //=====定时中断初始化
 	// uart_init(72, 128000);		   //=====初始化串口1
 	Mosbus_Init();
 	while (1)
