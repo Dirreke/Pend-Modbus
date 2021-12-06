@@ -24,13 +24,13 @@ int TIM1_UP_IRQHandler(void)
 				delay_50 = 0, delay_flag = 0; //===给主函数提供50ms的精准延时
 		}
 		
-		Reg[17]=1;
+		//Reg[17]=1;
 		
-		eightfloat.data=1.2;//暂时测试用
-		Reg[4]=eightfloat.twobyte[0]; 
-		Reg[3]=eightfloat.twobyte[1]; 
-		Reg[2]=eightfloat.twobyte[2]; 
-		Reg[1]=eightfloat.twobyte[3]; 
+
+		Balance_KP  = Reg[1]; 
+		Balance_KD  = Reg[2]; 
+		Position_KP = Reg[3]; 
+		Position_KD = Reg[4]; 
 		
 		Encoder = Read_Encoder(4);				//===更新编码器位置信息
 		eightfloat.data=(double) (Encoder - Position_Zero);

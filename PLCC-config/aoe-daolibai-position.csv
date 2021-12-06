@@ -1,0 +1,31 @@
+﻿AOE ID,是否启用,名称,触发条件,触发条件参数,变量初始值,
+1000,TRUE,倒立摆控制,Simple_Repeat,100,"D_AngleBias:0;LastAngleBias:0;PWM_Angle:0;
+PositionBias:0;D_PositionBias:0;LastPositionBias:0;PWM_Position:0;
+ctrlout:0;uplim:10000;downlim:-10000;CountPosition:0;",
+,,,,,,
+AOE ID,变量定义,,,,,
+,,,,,,
+,,,,,,
+AOE ID,节点ID,名称,节点类型,超时时间(ms),表达式,
+1000,1,simulink通信事件,Condition,10,1,
+1000,2,角度环计算1,Condition,10,1,
+1000,3,角度环计算2,Condition,10,1,
+1000,4,判断countPosition,Switch,10,CountPosition>4.5,
+1000,5,位置环计算1,Condition,10,1,
+1000,6,位置环计算2,Condition,10,1,
+1000,7,两环计算完毕,Condition,10,1,
+1000,8,两环综合,Condition,10,1,
+1000,9,结束节点,Condition,100,1,
+,,,,,,
+AOE ID,首尾节点,动作名称,失败模式,动作类型,动作参数,
+1000,1;2,开始PID计算，角度环微分,Default,Set_Points,,D_AngleBias=AngleBias-LastAngleBias;
+1000,2;3,角度环PD,Default,Set_Points,,PWM_Angle=-Angle_KP*AngleBias-D_AngleBias*Angle_KD;
+1000,3;7,记录Last角度,Default,Set_Points,,LastAngleBias=AngleBias;
+1000,1;4,CountPosition++,Default,Set_Points,,CountPosition=CountPosition+1;
+1000,4;5,位置环一阶低通滤波器,Default,Set_Points,CountPosition:0;,PositionBias=0.2*Measure_PositionBias+0.8*PositionBias;
+1000,5;6,位置环微分,Default,Set_Points,,D_PositionBias=PositionBias-LastPositionBias;
+1000,6;7,位置环PD;记录Last位置,Default,Set_Points,,"PWM_Position=PositionBias*Position_KP+D_PositionBias*Position_KD;
+LastPositionBias=PositionBias;"
+1000,4;7,延续上一次的位置环结果,Default,NONE,,
+1000,7;8,PWM相加,Default,Set_Points,,ctrlout=PWM_Angle+PWM_Position;
+1000,8;9,限幅输出,Default,Set_Points,,PWMout=(ctrlout <= uplim && ctrlout >= downlim) * ctrlout + (ctrlout > uplim) * uplim + (ctrlout < downlim) * downlim;

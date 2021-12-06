@@ -6,7 +6,7 @@
 Œ“µƒÃ‘±¶–°µÍ£∫http://shop114407458.taobao.com/
 **************************************************************************/
 #define PI 3.14159265
-#define ZHONGZHI 3110
+#define ZHONGZHI 3010
 extern	int Balance_Pwm,Velocity_Pwm;
 int TIM1_UP_IRQHandler(void);
 int balance(float angle);

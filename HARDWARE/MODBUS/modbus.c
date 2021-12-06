@@ -91,7 +91,7 @@ void Modbud_fun10() //10号功能码处理  ---主机要读取本从机的寄存器
 
 	for (j = 0; j < Reglen; j++)
 	{
-		Reg[Regadd + j] = modbus.rcbuf[6+j*2]*256 + modbus.rcbuf[7+j*2];
+		Reg[Regadd + j] = modbus.rcbuf[7+j*2]*256 + modbus.rcbuf[8+j*2];
 	}
 
 	i = 0;
