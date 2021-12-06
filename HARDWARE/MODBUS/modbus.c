@@ -79,6 +79,39 @@ void Modbud_fun6() //6号功能码处理
 	}
 }
 
+void Modbud_fun10() //10号功能码处理  ---主机要读取本从机的寄存器
+{
+	u16 Regadd;
+	u16 Reglen;
+	u16 byte;
+	u16 i, j;
+	u16 crc;
+	Regadd = modbus.rcbuf[2] * 256 + modbus.rcbuf[3]; //得到要写入的寄存器的首地址
+	Reglen = modbus.rcbuf[4] * 256 + modbus.rcbuf[5]; //得到要写入的寄存器的数量
+
+	for (j = 0; j < Reglen; j++)
+	{
+		Reg[Regadd + j] = modbus.rcbuf[6+j*2]*256 + modbus.rcbuf[7+j*2];
+	}
+
+	i = 0;
+	modbus.Sendbuf[i++] = modbus.myadd; //本设备地址
+	modbus.Sendbuf[i++] = 0x10;			//功能码
+	modbus.Sendbuf[i++] = modbus.rcbuf[2];
+	modbus.Sendbuf[i++] = modbus.rcbuf[3];
+	modbus.Sendbuf[i++] = modbus.rcbuf[4];
+	modbus.Sendbuf[i++] = modbus.rcbuf[5];
+
+	crc = crc16(modbus.Sendbuf, i);
+	modbus.Sendbuf[i++] = crc / 256; //
+	modbus.Sendbuf[i++] = crc % 256;
+
+	for (j = 0; j < i; j++)
+	{
+		my_usart_byte(modbus.Sendbuf[j]);
+	}
+}
+
 void Mosbus_Event()
 {
 	u16 crc;
@@ -120,6 +153,8 @@ void Mosbus_Event()
 			case 7:
 				break;
 				//....
+			case 16:
+				Modbud_fun10();//10号功能吗处理
 			}
 		}
 		else if (modbus.rcbuf[0] == 0) //广播地址
