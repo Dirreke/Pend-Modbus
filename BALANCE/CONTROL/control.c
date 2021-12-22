@@ -6,8 +6,8 @@
 int Balance_Pwm, Position_Pwm;
 u8 Flag_Target, Position_Target;
 extern u16 Reg[];
-union EightByteFloat {int16_t twobyte[4]; double data;}eightfloat;//unionÊÇµÍÎ»µÍµØÖ·
-
+//u8 delay_20=0;
+u16 modcount=0;
 
 /**************************************************************************
 º¯Êý¹¦ÄÜ£ºËùÓÐµÄ¿ØÖÆ´úÂë¶¼ÔÚÕâÀïÃæ
@@ -15,66 +15,56 @@ union EightByteFloat {int16_t twobyte[4]; double data;}eightfloat;//unionÊÇµÍÎ»µ
 **************************************************************************/
 int TIM1_UP_IRQHandler(void)
 {
-	if (TIM1->SR & 0X0001) //1ms¶¨Ê±ÖÐ¶Ï
+	if (TIM1->SR & 0X0001) //4ms¶¨Ê±ÖÐ¶Ï
 	{
 		TIM1->SR &= ~(1 << 0); //===Çå³ý¶¨Ê±Æ÷1ÖÐ¶Ï±êÖ¾Î»
-		if (delay_flag == 1)
-		{
-			if (++delay_50 == 10)
-				delay_50 = 0, delay_flag = 0; //===¸øÖ÷º¯ÊýÌá¹©50msµÄ¾«×¼ÑÓÊ±
-		}
 		
-		//Reg[17]=1;
+//		if (delay_flag == 1)
+//		{
+//			if (++delay_50 == 2)
+//				delay_50 = 0, delay_flag = 0; //===¸øÖ÷º¯ÊýÌá¹©50msµÄ¾«×¼ÑÓÊ±
+//		}
 		
-
-		Balance_KP  = Reg[1]; 
-		Balance_KD  = Reg[2]; 
-		Position_KP = Reg[3]; 
-		Position_KD = Reg[4]; 
-		
-		Encoder = Read_Encoder(4);				//===¸üÐÂ±àÂëÆ÷Î»ÖÃÐÅÏ¢
-		eightfloat.data=(double) (Encoder - Position_Zero);
-		Reg[8]=eightfloat.twobyte[0]; 
-		Reg[7]=eightfloat.twobyte[1]; 
-		Reg[6]=eightfloat.twobyte[2]; 
-		Reg[5]=eightfloat.twobyte[3]; 
-		
-		Angle_Balance = Get_Adc_Average(3, 15); //===¸üÐÂ×ËÌ¬
-		eightfloat.data = (double) (Angle_Balance - ZHONGZHI);
-		Reg[12]=eightfloat.twobyte[0]; 
-		Reg[11]=eightfloat.twobyte[1]; 
-		Reg[10]=eightfloat.twobyte[2]; 
-		Reg[9] =eightfloat.twobyte[3]; 
-		
-		//´Ó¿ØÖÆÆ÷¶ÁÈ¡PWMout
-		eightfloat.twobyte[0]=Reg[16]; 
-		eightfloat.twobyte[1]=Reg[15];
-		eightfloat.twobyte[2]=Reg[14]; 
-		eightfloat.twobyte[3]=Reg[13];
-		
-//		Balance_Pwm = balance(Angle_Balance);	//===½Ç¶ÈPD¿ØÖÆ
-//		if (++Position_Target > 4)
+			//Ä£ÄâÍ¨Ñ¶Ê±¼äÖÍºó
+//		if( ++delay_20 > 15 ) { 
+//			delay_20=0;
+//			Balance_Pwm = balance(Angle_Balance);	//===½Ç¶ÈPD¿ØÖÆ
+//		if (++Position_Target > 3)
 //			Position_Pwm = Position(Encoder), Position_Target = 0; //===Î»ÖÃPD¿ØÖÆ 25ms½øÐÐÒ»´ÎÎ»ÖÃ¿ØÖÆ
+//		}
+//		if( delay_20 == 12	){
+//		//Ä£Äâ´Ó¿ØÖÆÆ÷¶ÁÈ¡PWMout²¢Êä³ö£¬ÓÐ12msµÄÑÓ³Ù
+//		Moto = Balance_Pwm - Position_Pwm;//Reg[3];  //Balance_Pwm - Position_Pwm;						   //===¼ÆËãµç»ú×îÖÕPWM
+//		}	
 
-		Moto = (int)(eightfloat.data); //Balance_Pwm - Position_Pwm;						   //===¼ÆËãµç»ú×îÖÕPWM
-		Xianfu_Pwm();											   //===PWMÏÞ·ù ·´ÕýÕ¼¿Õ±È100%´øÀ´µÄÏµÍ³²»ÎÈ¶¨ÒòËØ
+		Mosbus_Event(); //´¦ÀíMODbusÊý¾Ý
 		
-		if (Turn_Off(Voltage) == 0)								   //===µÍÑ¹ºÍÇã½Ç¹ý´ó±£»¤
-			Set_Pwm(Moto);										   //===¸³Öµ¸øPWM¼Ä´æÆ÷
-		Led_Flash(100);											   //===LEDÉÁË¸Ö¸Ê¾ÏµÍ³Õý³£ÔËÐÐ
-		Voltage = Get_battery_volt();							   //===»ñÈ¡µç³ØµçÑ¹
-		Key();													   //===É¨Ãè°´¼ü±ä»¯
-		if (modbus.timrun != 0)
+			
+		//Led_Flash(100);											   //===LEDÉÁË¸Ö¸Ê¾ÏµÍ³Õý³£ÔËÐÐ
+		//Key();													   //===É¨Ãè°´¼ü±ä»¯
+		
+
+	}
+	return 0;
+}
+
+void TIM2_IRQHandler(void)
+{ 		    		  			    
+	if(TIM2->SR&0X0001)//Òç³öÖÐ¶Ï
+	{
+		
+ 		if (modbus.timrun != 0)
 		{
 			modbus.timout++;
-			if (modbus.timout >= 10) //¼ä¸ôÊ±¼ä´ïµ½ÁËÊ±¼ä
+			if (modbus.timout >= 4) //¼ä¸ôÊ±¼ä´ïµ½ÁËÊ±¼ä
 			{
 				modbus.timrun = 0; //¹Ø±Õ¶¨Ê±Æ÷--Í£Ö¹¶¨Ê±
 				modbus.reflag = 1; //ÊÕµ½Ò»Ö¡Êý¾Ý
 			}
-		}
-	}
-	return 0;
+		}  	
+		
+	}				   
+	TIM2->SR&=~(1<<0);//Çå³ýÖÐ¶Ï±êÖ¾Î» 	    
 }
 
 /**************************************************************************
@@ -106,8 +96,8 @@ int Position(int Encoder)
 	static float Position_PWM, Last_Position, Position_Bias, Position_Differential;
 	static float Position_Least;
 	Position_Least = Encoder - Position_Zero; //===
-	Position_Bias *= 0.8;
-	Position_Bias += Position_Least * 0.2; //===Ò»½×µÍÍ¨ÂË²¨Æ÷
+	Position_Bias *= 0.6;      //ÂË²¨Æ÷5ms--0.8
+	Position_Bias += Position_Least * 0.4; //===Ò»½×µÍÍ¨ÂË²¨Æ÷
 	Position_Differential = Position_Bias - Last_Position;
 	Last_Position = Position_Bias;
 	Position_PWM = Position_Bias * Position_KP + Position_Differential * Position_KD; //===ËÙ¶È¿ØÖÆ
@@ -148,7 +138,7 @@ void Xianfu_Pwm(void)
 **************************************************************************/
 void Key(void)
 {
-	int Position = 1040; //Ä¿±êÎ»ÖÃ µç»úÔ­Ê¼Î»ÖÃÊÇ10000  ×ªÒ»È¦ÊÇ1040 ºÍ±àÂëÆ÷¾«¶ÈÓÐ¹Ø£¬Ä¬ÈÏÊÇµç»ú×ªÒ»È¦£¬Êä³ö1040¸öÌø±äÑØ
+	int Position = 1040/4; //Ä¿±êÎ»ÖÃ µç»úÔ­Ê¼Î»ÖÃÊÇ10000  ×ªÒ»È¦ÊÇ1040 ºÍ±àÂëÆ÷¾«¶ÈÓÐ¹Ø£¬Ä¬ÈÏÊÇµç»ú×ªÒ»È¦£¬Êä³ö1040¸öÌø±äÑØ
 	static int tmp, flag, count;
 	tmp = click_N_Double(100);
 

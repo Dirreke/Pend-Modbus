@@ -1,5 +1,6 @@
 #include "modbus_uart.h"
 #include "modbus.h"
+extern u16 modcount;
 
 void my_usart_Init(void)
 {
@@ -58,11 +59,13 @@ void USART1_IRQHandler() //MODBUS字节接收中断
 				USART_ClearITPendingBit(USART1,USART_IT_RXNE);
       return;
     }
+		modbus.timout = 0;
     modbus.rcbuf[modbus.recount++] = sbuf;
-    modbus.timout = 0;
     if (modbus.recount == 1) //收到主机发来的一帧数据的第一字节
-    {
+    {//modbus.timout = 0;
       modbus.timrun = 1; //启动定时
+			//modcount=0;
+			
     }
 		USART_ClearITPendingBit(USART1,USART_IT_RXNE);
   }

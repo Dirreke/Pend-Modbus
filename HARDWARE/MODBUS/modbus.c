@@ -5,6 +5,7 @@
 MODBUS modbus;
 extern u16 Reg[];
 
+
 /*
 因为波特率 9600
 1位数据的时间为 1000000us/9600bit/s=104us
@@ -20,7 +21,7 @@ void Mosbus_Init()
 }
 
 void Modbud_fun3() //3号功能码处理  ---主机要读取本从机的寄存器
-{
+{	
 	u16 Regadd;
 	u16 Reglen;
 	u16 byte;
@@ -29,7 +30,7 @@ void Modbud_fun3() //3号功能码处理  ---主机要读取本从机的寄存器
 	Regadd = modbus.rcbuf[2] * 256 + modbus.rcbuf[3]; //得到要读取的寄存器的首地址
 	Reglen = modbus.rcbuf[4] * 256 + modbus.rcbuf[5]; //得到要读取的寄存器的数量
 	i = 0;
-
+	
 	modbus.Sendbuf[i++] = modbus.myadd; //本设备地址
 	modbus.Sendbuf[i++] = 0x03;			//功能码
 	byte = Reglen * 2;					//要返回的数据字节数
@@ -37,7 +38,7 @@ void Modbud_fun3() //3号功能码处理  ---主机要读取本从机的寄存器
 	modbus.Sendbuf[i++] = byte % 256;
 
 	for (j = 0; j < Reglen; j++)
-	{
+	{	
 		modbus.Sendbuf[i++] = Reg[Regadd + j] / 256;
 		modbus.Sendbuf[i++] = Reg[Regadd + j] % 256;
 	}
@@ -77,9 +78,10 @@ void Modbud_fun6() //6号功能码处理
 	{
 		my_usart_byte(modbus.Sendbuf[j]);
 	}
+
 }
 
-void Modbud_fun10() //10号功能码处理  ---主机要读取本从机的寄存器
+void Modbud_fun10() //10号功能码处理  ---主机要写入本从机的寄存器
 {
 	u16 Regadd;
 	u16 Reglen;
@@ -120,16 +122,18 @@ void Mosbus_Event()
 	{
 		return;
 	}
+	
 	if(modbus.recount <= 2)
 	{
 		modbus.recount = 0;
 		modbus.reflag=0;	
 		return;
 	}
+	
 	crc = crc16(&modbus.rcbuf[0], modbus.recount - 2);								   //计算校验码
 	rccrc = modbus.rcbuf[modbus.recount - 2] * 256 + modbus.rcbuf[modbus.recount - 1]; //收到的校验码
 	if (crc == rccrc)																   //数据包符号CRC校验规则
-	{
+	{	
 		if (modbus.rcbuf[0] == modbus.myadd) //确认数据包是否是发给本设备的
 		{
 			switch (modbus.rcbuf[1]) //分析功能码
@@ -161,7 +165,6 @@ void Mosbus_Event()
 		{
 		}
 	}
-
 	modbus.recount = 0; //
 	modbus.reflag = 0;
 }

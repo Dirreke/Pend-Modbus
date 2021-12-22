@@ -6,4 +6,5 @@
 Ã‘±¶µÍ∆Ã£∫http://shop114407458.taobao.com/
 **************************************************************************/
 void Timer1_Init(u16 arr,u16 psc);  
+void Timer2_Init(u16 arr,u16 psc);
 #endif

@@ -81,16 +81,17 @@
 #include "exti.h"
 #include "modbus_uart.h"
 #include "modbus.h"
+#include "control.h"
 //JTAG模式设置定义
 #define JTAG_SWD_DISABLE   0X02
 #define SWD_ENABLE         0X01
 #define JTAG_SWD_ENABLE    0X00	                                     
 extern u8 Flag_Stop,delay_50,delay_flag;         //停止标志位 50ms精准演示标志位
-extern int Encoder,Position_Zero;            //编码器的脉冲计数
+extern s16 Encoder,Position_Zero;            //编码器的脉冲计数
 extern int Moto;                                   //电机PWM变量 应是Motor的 向Moto致敬	
 extern int Voltage;                                //电池电压采样相关的变量
-extern float Angle_Balance;                        //角位移传感器数据
-extern float Balance_KP,Balance_KD,Position_KP,Position_KD;  //PID系数
+extern s16 Angle_Balance;                        //角位移传感器数据
+extern u16 Balance_KP,Balance_KD,Position_KP,Position_KD;  //PID系数
 extern float Menu,Amplitude1,Amplitude2,Amplitude3,Amplitude4; //PID调试相关参数
 /////////////////////////////////////////////////////////////////  
 void Stm32_Clock_Init(u8 PLL);  //时钟初始化  
