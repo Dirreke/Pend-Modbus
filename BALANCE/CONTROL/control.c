@@ -6,7 +6,7 @@
 int Balance_Pwm, Position_Pwm;
 u8 Flag_Target, Position_Target;
 extern u16 Reg[];
-//u8 delay_20=0;
+u8 delay_20=0;
 u16 modcount=0;
 
 /**************************************************************************
@@ -25,22 +25,36 @@ int TIM1_UP_IRQHandler(void)
 //				delay_50 = 0, delay_flag = 0; //===给主函数提供50ms的精准延时
 //		}
 		
+		
+//		Encoder = Read_Encoder(4);				//===更新编码器位置信息
+//		Reg[1] = Encoder - Position_Zero;
+//		
+//		Angle_Balance = Get_Adc_Average(3, 15); //===更新姿态,消耗200*15us=3ms
+//		Reg[2] = Angle_Balance - ZHONGZHI;
+		
 			//模拟通讯时间滞后
-//		if( ++delay_20 > 15 ) { 
+//		if( ++delay_20 > 4 ) { 
 //			delay_20=0;
 //			Balance_Pwm = balance(Angle_Balance);	//===角度PD控制
-//		if (++Position_Target > 3)
+//		if (++Position_Target > 4)
 //			Position_Pwm = Position(Encoder), Position_Target = 0; //===位置PD控制 25ms进行一次位置控制
 //		}
-//		if( delay_20 == 12	){
+//		if( delay_20 == 0	){
 //		//模拟从控制器读取PWMout并输出，有12ms的延迟
 //		Moto = Balance_Pwm - Position_Pwm;//Reg[3];  //Balance_Pwm - Position_Pwm;						   //===计算电机最终PWM
 //		}	
 
 		Mosbus_Event(); //处理MODbus数据
-		
 			
-		//Led_Flash(100);											   //===LED闪烁指示系统正常运行
+			
+//		Voltage = Get_battery_volt();							   //===获取电池电压
+//		//从控制器读取PWMout并输出
+//		//Moto = (s16)(Reg[3]);  //Balance_Pwm - Position_Pwm;						   //===计算电机最终PWM
+//		Xianfu_Pwm();											   //===PWM限幅 反正占空比100%带来的系统不稳定因素
+//		if (Turn_Off(Voltage) == 0)								   //===低压和倾角过大保护
+//			Set_Pwm(Moto);										   //===赋值给PWM寄存器
+			
+		Led_Flash(500);											   //===LED闪烁指示系统正常运行
 		//Key();													   //===扫描按键变化
 		
 
@@ -96,8 +110,8 @@ int Position(int Encoder)
 	static float Position_PWM, Last_Position, Position_Bias, Position_Differential;
 	static float Position_Least;
 	Position_Least = Encoder - Position_Zero; //===
-	Position_Bias *= 0.6;      //滤波器5ms--0.8
-	Position_Bias += Position_Least * 0.4; //===一阶低通滤波器
+	Position_Bias *= 0.8;      //滤波器5ms--0.8
+	Position_Bias += Position_Least * 0.2; //===一阶低通滤波器
 	Position_Differential = Position_Bias - Last_Position;
 	Last_Position = Position_Bias;
 	Position_PWM = Position_Bias * Position_KP + Position_Differential * Position_KD; //===速度控制

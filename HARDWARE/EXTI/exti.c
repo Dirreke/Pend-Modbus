@@ -26,12 +26,12 @@ void EXTI_Init(void)
 void EXTI9_5_IRQHandler(void)
 {			
 	delay_ms(5);   //消抖			 
-   if(KEY5==0)	// 
+   if(KEY7==0)	// 变成了KEY7！！！！！！
 	{
 		Flag_Stop=!Flag_Stop;
 
 	}		
-	if(KEY7==0)	///Menu 
+	if(KEY5==0)	///Menu 
 	{
 		if(Menu++==4) Menu=1;
 	}		

@@ -3,6 +3,8 @@
         "modbus_uart.h": "c",
         "modbus.h": "c",
         "DataScope_DP.C": "cpp",
-        "timer.h": "c"
+        "timer.h": "c",
+        "*.rh": "c",
+        "LED.C": "cpp"
     }
 }
