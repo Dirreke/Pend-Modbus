@@ -44,17 +44,18 @@ void EXTI15_10_IRQHandler(void)
 	delay_ms(5);   //Ïû¶¶			 
   if(KEY11==0)	//PID-
 	{
-		if(Menu==1)        Balance_KP-=Amplitude1;
-	  else	if(Menu==2)  Balance_KD-=Amplitude2;
-		else  if(Menu==3)  Position_KP-=Amplitude3;
-		else  if(Menu==4)  Position_KD-=Amplitude4;
+		zhongzhi=Angle_Balance;
+//		if(Menu==1)        Balance_KP-=Amplitude1;
+//	  else	if(Menu==2)  Balance_KD-=Amplitude2;
+//		else  if(Menu==3)  Position_KP-=Amplitude3;
+//		else  if(Menu==4)  Position_KD-=Amplitude4;
 	}		
 	 if(KEY12==0)	//PID+ 
 	{
-			    if(Menu==1)  Balance_KP+=Amplitude1;
-	  else	if(Menu==2)  Balance_KD+=Amplitude2;
-		else  if(Menu==3)  Position_KP+=Amplitude3;
-		else  if(Menu==4)  Position_KD+=Amplitude4;
+//			    if(Menu==1)  Balance_KP+=Amplitude1;
+//	  else	if(Menu==2)  Balance_KD+=Amplitude2;
+//		else  if(Menu==3)  Position_KP+=Amplitude3;
+//		else  if(Menu==4)  Position_KD+=Amplitude4;
 	}		
 	if(Balance_KP<=0) Balance_KP=0;
 	if(Balance_KD<=0) Balance_KD=0;

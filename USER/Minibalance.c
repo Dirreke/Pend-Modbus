@@ -7,7 +7,7 @@ u8 Flag_Stop = 1, delay_50, delay_flag;											  //Í£Ö¹±êÖ¾Î» 50ms¾«×¼ÑİÊ¾±êÖ
 s16 Encoder, Position_Zero = 10000;												  //±àÂëÆ÷µÄÂö³å¼ÆÊı
 int Moto;																		  //µç»úPWM±äÁ¿ Ó¦ÊÇMotorµÄ ÏòMotoÖÂ¾´
 int Voltage;																	  //µç³ØµçÑ¹²ÉÑùÏà¹ØµÄ±äÁ¿
-s16 Angle_Balance;															  //½ÇÎ»ÒÆ´«¸ĞÆ÷Êı¾İ
+s16 Angle_Balance,zhongzhi=1968;															  //½ÇÎ»ÒÆ´«¸ĞÆ÷Êı¾İ
 
 //u16 Balance_KP = 300, Balance_KD = 100, Position_KP = 15, Position_KD = 75;	  //20msµÈ·ùÒ¡°ÚPIDÏµÊı£¬Î»ÖÃ»·ÊÇ3±¶Ê±¼ä£¬ÂË²¨Ê¹ÓÃ0.6
 //u16 Balance_KP = 300, Balance_KD = 100, Position_KP = 15, Position_KD = 75;	  //15msµÈ·ùÒ¡°ÚPIDÏµÊı£¬Î»ÖÃ»·ÊÇ4±¶Ê±¼ä£¬ÂË²¨Ê¹ÓÃ0.6
@@ -50,7 +50,7 @@ int main(void)
 	Baterry_Adc_Init();			   //=====µç³ØµçÑ¹Ä£ÄâÁ¿²É¼¯³õÊ¼»¯
 	Timer1_Init(9, 7199);		   //=====¶¨Ê±ÖĞ¶Ï³õÊ¼»¯
 	Timer2_Init(1, 7199);		   //=====¶¨Ê±ÖĞ¶Ï³õÊ¼»¯
-// uart_init(72, 128000);		   //=====³õÊ¼»¯´®¿Ú1
+  uart_init(72, 128000);		   //=====³õÊ¼»¯´®¿Ú1
 	Mosbus_Init();
 	
 	
@@ -61,8 +61,8 @@ int main(void)
 		Reg[1] = Encoder - Position_Zero;
 		
 		Angle_Balance = Get_Adc_Average(3, 15); //===¸üĞÂ×ËÌ¬,ÏûºÄ200*15us=3ms
-		Reg[2] = Angle_Balance - ZHONGZHI;
-		
+		Reg[2] = Angle_Balance - zhongzhi;
+		Reg[4] = zhongzhi;
 		
 		Voltage = Get_battery_volt();							   //===»ñÈ¡µç³ØµçÑ¹
 		
@@ -71,6 +71,11 @@ int main(void)
 		Xianfu_Pwm();											   //===PWMÏŞ·ù ·´ÕıÕ¼¿Õ±È100%´øÀ´µÄÏµÍ³²»ÎÈ¶¨ÒòËØ
 		if (Turn_Off(Voltage) == 0)								   //===µÍÑ¹ºÍÇã½Ç¹ı´ó±£»¤
 			Set_Pwm(Moto);										   //===¸³Öµ¸øPWM¼Ä´æÆ÷
+		
+		if(delay_flag==0){
+			delay_flag=1;
+		DataScope();	//===ÉÏÎ»»ú
+			}
 		
 	}
 }

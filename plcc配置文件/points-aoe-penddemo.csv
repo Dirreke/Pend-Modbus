@@ -1,0 +1,5 @@
+﻿序号,点号,名称,别名,是否离散,是否计算点,计算公式,变换公式,逆变换公式,变化公式,判零公式,单位,上限值,下限值,最大变化,最小变化,是否实时点,是否SOE,默认值,备注
+1,1001,测点1,Measure_PositionBias,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,
+2,1002,测点2,AngleBias,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,
+3,1003,测点3,PWMout,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,
+4,1004,测点4,Anglezhongzhi,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,

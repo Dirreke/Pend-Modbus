@@ -19,11 +19,11 @@ int TIM1_UP_IRQHandler(void)
 	{
 		TIM1->SR &= ~(1 << 0); //===清除定时器1中断标志位
 		
-//		if (delay_flag == 1)
-//		{
-//			if (++delay_50 == 2)
-//				delay_50 = 0, delay_flag = 0; //===给主函数提供50ms的精准延时
-//		}
+		if (delay_flag == 1)
+		{
+			if (++delay_50 == 15)
+				delay_50 = 0, delay_flag = 0; //===给主函数提供50ms的精准延时
+		}
 		
 		
 //		Encoder = Read_Encoder(4);				//===更新编码器位置信息
@@ -45,6 +45,7 @@ int TIM1_UP_IRQHandler(void)
 //		}	
 
 		Mosbus_Event(); //处理MODbus数据
+		
 			
 			
 //		Voltage = Get_battery_volt();							   //===获取电池电压
@@ -92,7 +93,7 @@ int balance(float Angle)
 	float Bias;											//倾角偏差
 	static float Last_Bias, D_Bias;						//PID相关变量
 	int balance;										//PWM返回值
-	Bias = Angle - ZHONGZHI;							//求出平衡的角度中值 和机械相关
+	Bias = Angle - zhongzhi;//ZHONGZHI;							//求出平衡的角度中值 和机械相关
 	D_Bias = Bias - Last_Bias;							//求出偏差的微分 进行微分控制
 	balance = -Balance_KP * Bias - D_Bias * Balance_KD; //===计算倾角控制的电机PWM  PD控制
 	Last_Bias = Bias;									//保持上一次的偏差
@@ -196,7 +197,7 @@ u8 Turn_Off(int voltage)
 	else
 		temp = 0;
 
-	if (Angle_Balance < (ZHONGZHI - 800) || Angle_Balance > (ZHONGZHI + 800) || voltage < 700)
+	if (Angle_Balance < (zhongzhi - 800) || Angle_Balance > (zhongzhi + 800) || voltage < 700)
 		count++;
 	else
 		count = 0;

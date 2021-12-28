@@ -90,7 +90,7 @@ extern u8 Flag_Stop,delay_50,delay_flag;         //停止标志位 50ms精准演示标志位
 extern s16 Encoder,Position_Zero;            //编码器的脉冲计数
 extern int Moto;                                   //电机PWM变量 应是Motor的 向Moto致敬	
 extern int Voltage;                                //电池电压采样相关的变量
-extern s16 Angle_Balance;                        //角位移传感器数据
+extern s16 Angle_Balance,zhongzhi;                   //角位移传感器数据
 extern u16 Balance_KP,Balance_KD,Position_KP,Position_KD;  //PID系数
 extern float Menu,Amplitude1,Amplitude2,Amplitude3,Amplitude4; //PID调试相关参数
 /////////////////////////////////////////////////////////////////  

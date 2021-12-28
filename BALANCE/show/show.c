@@ -100,7 +100,7 @@ void DataScope(void)
 {   
 		DataScope_Get_Channel_Data( Angle_Balance, 1 );      
 		DataScope_Get_Channel_Data( Encoder, 2 );         
-		DataScope_Get_Channel_Data( 0, 3 );              
+		DataScope_Get_Channel_Data( 4000 , 3 );              
 //		DataScope_Get_Channel_Data( 0 , 4 );   
 //		DataScope_Get_Channel_Data(0, 5 ); //用您要显示的数据替换0就行了
 //		DataScope_Get_Channel_Data(0 , 6 );//用您要显示的数据替换0就行了
