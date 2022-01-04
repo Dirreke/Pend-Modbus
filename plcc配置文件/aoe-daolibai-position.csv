@@ -2,7 +2,7 @@
 1000,TRUE,倒立摆控制,Simple_Repeat,15,"D_AngleBias:0;LastAngleBias:0;PWM_Angle:0;
 PositionBias:0;D_PositionBias:0;LastPositionBias:0;PWM_Position:0;
 ctrlout:0;uplim:10000;downlim:-10000;CountPosition:0;
-Angle_KP:400;Angle_KD:100;Position_KP:15;Position_KD:75;",
+Angle_KP:400;Angle_KD:100;Position_KP:10;Position_KD:75;",
 ,,,,,,
 AOE ID,变量定义,,,,,
 ,,,,,,
