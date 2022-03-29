@@ -1,9 +1,0 @@
-﻿序号,点号,名称,别名,是否离散,是否计算点,计算公式,变换公式,逆变换公式,变化公式,判零公式,单位,上限值,下限值,最大变化,最小变化,是否实时点,是否SOE,默认值,备注
-1,1001,测点1,Angle_KP,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,400,
-2,1002,测点2,Angle_KD,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,400,
-3,1003,测点3,Position_KP,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,20,
-4,1004,测点4,Position_KD,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,300,
-5,1005,测点2,Measure_PositionBias,FALSE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,测量的小车位置
-6,1006,测点3,AngleBias,FALSE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,测量的倒立摆与数值方向夹角
-7,1007,测点4,PWMout,FALSE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,控制器下发的遥调 -->设定作用在小车上的力
-8,1008,测点5,DoCal_POINT,TRUE,FALSE,,,,,,,999999,-999999,0,0,FALSE,FALSE,0,根据该测点状态判断控制器是否进行计算，由于simulink模型仿真时间与实际时间不同，需要与simulink每通信一次进行一个步长的计算
